@@ -28,14 +28,17 @@ class Comic(object):
         self.binding = None
 
     def set_on_sale(self, value):
-        pattern = "On Sale ([\d]*)\/([\d]*)"
-        m = re.match(pattern, value)
-        if m is None:
-            raise RuntimeError("Could not parse the provided date")
-        year = datetime.datetime.now().year
-        month = int(m.groups()[0])
-        day = int(m.groups()[1])
-        self.on_sale = datetime.date(year, month, day)
+        if value == "Available Now":
+            self.on_sale = datetime.date.today()
+        else:
+            pattern = "On Sale ([\d]*)\/([\d]*)"
+            m = re.match(pattern, value)
+            if m is None:
+                raise RuntimeError("Could not parse the provided date")
+            year = datetime.datetime.now().year
+            month = int(m.groups()[0])
+            day = int(m.groups()[1])
+            self.on_sale = datetime.date(year, month, day)
 
     def __repr__(self):
         r = "Title: {}\n\tURL: {}\n\tOn Sale: {}\n\tBinding: {}\n"
